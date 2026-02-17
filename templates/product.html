@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }} - Picky</title>
+</head>
+<body>
+
+    <h1>{{ product.name }}</h1>
+    <p>Category: {{ product.category }}</p>
+    <p>Price: £{{ product.price }}</p>
+
+    <h2>Recommended Products</h2>
+
+    {% if recommendations %}
+        <ul>
+            {% for item in recommendations %}
+                <li>
+                    <a href="/product/{{ item.id }}">
+                        {{ item.name }}
+                    </a>
+                    - £{{ item.price }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations available.</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Back to Home</a>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Picky - Smart E-Commerce</title>
+</head>
+<body>
+    <h1>Welcome to Picky 🚀</h1>
+    <h2>Available Products</h2>
+
+    <ul>
+    {% for product in products %}
+        <li>
+            <a href="/product/{{ product.id }}">
+                <strong>{{ product.name }}</strong>
+            </a>
+            - {{ product.category }} - £{{ product.price }}
+        </li>
+    {% endfor %}
+    </ul>
+
+
+</body>
+</html>
