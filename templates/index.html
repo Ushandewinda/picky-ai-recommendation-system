@@ -1,9 +1,30 @@
 <!DOCTYPE html>
 <html>
+    <p>
+    <a href="/login">Login</a>
+</p>
 <head>
     <title>Picky - Smart E-Commerce</title>
 </head>
 <body>
+
+    <h2>Recommended For You</h2>
+
+{% if personalised %}
+    <ul>
+        {% for item in personalised %}
+            <li>
+                <a href="/product/{{ item.id }}">
+                    <strong>{{ item.name }}</strong>
+                </a>
+                - {{ item.category }} - £{{ item.price }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No personalised recommendations yet. Rate some products to get suggestions.</p>
+{% endif %}
+
     <h1>Welcome to Picky 🚀</h1>
     <h2>Available Products</h2>
 

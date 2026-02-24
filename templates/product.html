@@ -29,5 +29,24 @@
     <br>
     <a href="/">Back to Home</a>
 
+<h3>Rating Summary</h3>
+<p>Average Rating: {{ avg_rating }} / 5</p>
+<p>Total Ratings: {{ rating_count }}</p>
+
+<h2>Rate this Product</h2>
+
+<form method="POST" action="/rate/{{ product.id }}">
+    <label for="rating">Select rating:</label>
+    <select name="rating" required>
+        <option value="">--Choose--</option>
+        <option value="1">1 ⭐</option>
+        <option value="2">2 ⭐⭐</option>
+        <option value="3">3 ⭐⭐⭐</option>
+        <option value="4">4 ⭐⭐⭐⭐</option>
+        <option value="5">5 ⭐⭐⭐⭐⭐</option>
+    </select>
+    <button type="submit">Submit Rating</button>
+</form>
+
 </body>
 </html>
