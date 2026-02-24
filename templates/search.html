@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h4 fw-bold mb-3">Search</h1>
+
+{% if query %}
+  <p class="text-muted">Results for: <strong>{{ query }}</strong></p>
+{% endif %}
+
+{% if results %}
+  <div class="list-group">
+    {% for p in results %}
+      <a href="/product/{{ p.id }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          <div class="fw-semibold">{{ p.name }}</div>
+          <div class="text-muted small">{{ p.category }}</div>
+        </div>
+        <span class="badge bg-primary rounded-pill">£{{ "%.2f"|format(p.price) }}</span>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  {% if query %}
+    <p class="text-muted">No results found. Try another keyword.</p>
+  {% else %}
+    <p class="text-muted">Type something in the search bar to find products.</p>
+  {% endif %}
+{% endif %}
+
+{% endblock %}
