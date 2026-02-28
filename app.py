@@ -30,10 +30,11 @@ def get_products():
 def get_products_with_text():
     """
     Fetch minimal fields needed to build TF-IDF text corpus.
+    (Includes image_url and source so UI can show external data.)
     """
     conn = get_db_connection()
     rows = conn.execute("""
-        SELECT id, name, category, description, price
+        SELECT id, name, category, description, price, image_url, source
         FROM products
     """).fetchall()
     conn.close()
@@ -147,14 +148,14 @@ def get_tfidf_recommendations(product_id, top_n=3):
     idx = ids.index(product_id)
     scores = list(enumerate(sim_matrix[idx]))
 
-    # sort by similarity desc, remove itself
+    # Sort by similarity desc, remove itself
     scores = sorted(scores, key=lambda x: x[1], reverse=True)
     scores = [s for s in scores if ids[s[0]] != product_id]
 
     top_indices = [s[0] for s in scores[:top_n]]
     top_ids = [ids[i] for i in top_indices]
 
-    # fetch full product rows in same order
+    # Fetch full product rows in the same order
     conn = get_db_connection()
     recs = []
     for pid in top_ids:
@@ -169,6 +170,11 @@ def get_tfidf_recommendations(product_id, top_n=3):
 # -------------------------
 # Routes
 # -------------------------
+@app.route("/products")
+def products_page():
+    products = get_products()
+    return render_template("products.html", products=products)
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -193,6 +199,12 @@ def login():
         return redirect(url_for("home"))
 
     return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
 
 
 @app.route("/")
@@ -241,10 +253,6 @@ def rate_product(product_id):
 
     return redirect(url_for("product_detail", product_id=product_id))
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("home"))
 
 @app.route("/search")
 def search():
@@ -261,6 +269,7 @@ def search():
         conn.close()
 
     return render_template("search.html", query=q, results=results)
+
 
 # -------------------------
 # Run app
